@@ -2,7 +2,7 @@
 - 👀 I’m interested in Data Analysis.
 - 🌱 I’m currently learning Data Analysis with python.
 - 💞️ I am pursuing Master of Science in Data Science at Friedrich Alexander Universität, Germany.
-- 📫 DM me on Facebook.
+- 📫 DM me on LinkedIn.
 
 <!---
 JunayedMiah/JunayedMiah is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
