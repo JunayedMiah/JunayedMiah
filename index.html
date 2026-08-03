@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Md Junayed Miah — Data Engineering &amp; DataOps</title>
+<meta name="description" content="Portfolio of Md Junayed Miah — Data Science MSc student building reproducible ETL pipelines and DataOps workflows." />
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     DESIGN TOKENS
+     Change these to re-theme the whole site.
+     ============================================================ */
+  :root{
+    --bg:            #F6F7F9;
+    --surface:       #FFFFFF;
+    --surface-alt:   #EEF1F5;
+    --ink:           #12151C;
+    --ink-soft:      #5A6274;
+    --ink-faint:     #8B93A3;
+    --line:          #DFE3EA;
+    --accent:        #2452E8;
+    --accent-soft:   rgba(36,82,232,0.09);
+    --accent-ink:    #16349E;
+    --ok:            #1C9A5B;
+    --ok-soft:       rgba(28,154,91,0.10);
+    --pending:       #B5790E;
+    --pending-soft:  rgba(181,121,14,0.12);
+
+    --display: 'Space Grotesk', 'Segoe UI', sans-serif;
+    --body:    'Inter', 'Segoe UI', sans-serif;
+    --mono:    'JetBrains Mono', 'Courier New', monospace;
+
+    --maxw: 1040px;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{ color:var(--accent); text-decoration:none; }
+  a:hover{ text-decoration:underline; }
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  h1,h2,h3{ font-family:var(--display); font-weight:600; margin:0; color:var(--ink); }
+
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.10em;
+    text-transform:uppercase;
+    color:var(--accent-ink);
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px; height:7px;
+    background:var(--accent);
+    border-radius:50%;
+    display:inline-block;
+  }
+
+  /* ============================================================
+     NAV
+     ============================================================ */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,247,249,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:60px;
+    gap:16px;
+  }
+  .brand{
+    font-family:var(--mono); font-weight:500; font-size:14.5px;
+    color:var(--ink); letter-spacing:0.02em;
+  }
+  .brand span{ color:var(--accent); }
+  .navlinks{
+    display:flex; gap:22px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .navlinks::-webkit-scrollbar{ display:none; }
+  .navlinks a{
+    font-size:13.5px; font-family:var(--mono);
+    color:var(--ink-soft); white-space:nowrap;
+    padding:6px 2px;
+    border-bottom:2px solid transparent;
+    transition:color .15s, border-color .15s;
+  }
+  .navlinks a:hover, .navlinks a.active{
+    color:var(--ink); text-decoration:none;
+    border-bottom-color:var(--accent);
+  }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  header.hero{
+    padding:64px 0 40px;
+    border-bottom:1px solid var(--line);
+    position:relative;
+    background-color:var(--bg);
+    overflow:hidden;
+  }
+  header.hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:36px 36px;
+    background-position:center top;
+    -webkit-mask-image:linear-gradient(to bottom, black 0%, black 45%, transparent 92%);
+    mask-image:linear-gradient(to bottom, black 0%, black 45%, transparent 92%);
+    pointer-events:none;
+  }
+  header.hero .wrap{ position:relative; z-index:1; }
+  .hero-top{
+    display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+    margin-bottom:26px;
+  }
+  .avatar{
+    width:64px; height:64px; border-radius:50%;
+    background:linear-gradient(135deg, var(--accent), #6C8CFF);
+    color:#fff; font-family:var(--mono); font-weight:500; font-size:17px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    /* To use a real photo instead: replace this div's contents with
+       <img src="images/profile.jpg" alt="Md Junayed Miah" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"> */
+  }
+  .hero h1{
+    font-size:clamp(28px, 4.4vw, 40px);
+    line-height:1.1;
+    margin-bottom:4px;
+  }
+  .hero-role{
+    font-family:var(--mono); color:var(--ink-soft); font-size:14.5px;
+  }
+  .hero p.lede{
+    max-width:640px;
+    font-size:17px;
+    color:var(--ink-soft);
+    margin:0 0 28px;
+  }
+  .hero-links{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:44px; }
+  .btn{
+    font-family:var(--body); font-weight:500; font-size:14.5px;
+    padding:10px 18px; border-radius:8px;
+    border:1px solid var(--line);
+    background:var(--surface); color:var(--ink);
+    display:inline-flex; align-items:center; gap:8px;
+    transition:border-color .15s, transform .15s, background .15s;
+  }
+  .btn:hover{ text-decoration:none; border-color:var(--accent); transform:translateY(-1px); }
+  .btn.primary{ background:var(--ink); color:#fff; border-color:var(--ink); }
+  .btn.primary:hover{ background:var(--accent); border-color:var(--accent); }
+
+  /* pipeline diagram */
+  .pipeline{ width:100%; }
+  .pipeline text{ font-family:var(--mono); }
+  .pipeline .stage-label{ fill:var(--ink-soft); font-size:11px; letter-spacing:0.06em; }
+  .pipeline .stage-node{ fill:var(--surface); stroke:var(--accent); stroke-width:1.6; }
+  .pipeline .stage-node.first{ fill:var(--accent); }
+  .pipeline .stage-num{ fill:var(--accent); font-size:10px; }
+  .pipeline .stage-num.first{ fill:#fff; }
+  .pipeline .flow-line{
+    stroke:var(--line); stroke-width:2;
+  }
+  .pipeline .flow-dash{
+    stroke:var(--accent); stroke-width:2;
+    stroke-dasharray:6 10;
+    animation:flow 2.4s linear infinite;
+    opacity:0.9;
+  }
+  @keyframes flow{ to{ stroke-dashoffset:-32; } }
+
+  /* ============================================================
+     SECTIONS (shared)
+     ============================================================ */
+  section{ padding:56px 0; border-bottom:1px solid var(--line); }
+  section .section-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom:28px; gap:16px; flex-wrap:wrap;
+  }
+  section h2{ font-size:22px; }
+  section .section-note{ font-family:var(--mono); font-size:12.5px; color:var(--ink-faint); }
+
+  #summary p{ max-width:720px; font-size:16.5px; color:var(--ink-soft); }
+  #summary .stat-row{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:16px; margin-top:28px; max-width:720px;
+  }
+  .stat{
+    border:1px solid var(--line); background:var(--surface);
+    border-radius:10px; padding:16px 18px;
+  }
+  .stat .num{ font-family:var(--mono); font-size:22px; color:var(--accent-ink); font-weight:500; }
+  .stat .label{ font-size:12.5px; color:var(--ink-soft); margin-top:2px; }
+
+  /* ---------- experience timeline ---------- */
+  .timeline{ position:relative; padding-left:26px; max-width:760px; }
+  .timeline::before{
+    content:""; position:absolute; left:5px; top:6px; bottom:6px;
+    width:1.5px; background:var(--line);
+  }
+  .tl-item{ position:relative; padding-bottom:34px; }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-item::before{
+    content:""; position:absolute; left:-26px; top:5px;
+    width:11px; height:11px; border-radius:50%;
+    background:var(--surface); border:2.5px solid var(--accent);
+  }
+  .tl-role{ font-family:var(--display); font-weight:600; font-size:17px; }
+  .tl-meta{ font-family:var(--mono); font-size:12.5px; color:var(--ink-faint); margin:3px 0 12px; }
+  .tl-item ul{ margin:0; padding-left:18px; color:var(--ink-soft); font-size:15px; }
+  .tl-item li{ margin-bottom:6px; }
+  .tl-item.placeholder{
+    border:1.5px dashed var(--line); border-radius:10px;
+    padding:16px 18px; margin-left:-2px;
+    color:var(--ink-faint); font-family:var(--mono); font-size:13px;
+  }
+  .tl-item.placeholder::before{ border-style:dashed; background:var(--bg); }
+
+  /* ---------- projects ---------- */
+  .project-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+  }
+  .card{
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:12px; overflow:hidden;
+    display:flex; flex-direction:column;
+    transition:border-color .15s, transform .15s;
+  }
+  .card:hover{ border-color:var(--accent); transform:translateY(-2px); }
+  .card-media{
+    aspect-ratio:16/9; background:var(--surface-alt);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--ink-faint); font-family:var(--mono); font-size:12.5px;
+    border-bottom:1px solid var(--line);
+    text-align:center; padding:12px;
+  }
+  .card-media img{ width:100%; height:100%; object-fit:cover; }
+  .card-body{ padding:20px; display:flex; flex-direction:column; gap:12px; flex:1; }
+  .card-title{ font-family:var(--display); font-weight:600; font-size:16.5px; }
+  .card-date{ font-family:var(--mono); font-size:12px; color:var(--ink-faint); margin-top:2px; }
+  .stage-tags{ display:flex; flex-wrap:wrap; gap:6px; }
+  .stage-tag{
+    font-family:var(--mono); font-size:11px; letter-spacing:0.04em;
+    background:var(--accent-soft); color:var(--accent-ink);
+    padding:3px 8px; border-radius:5px; text-transform:uppercase;
+  }
+  .card-body ul{ margin:0; padding-left:18px; color:var(--ink-soft); font-size:14px; flex:1; }
+  .card-body li{ margin-bottom:5px; }
+  .card-link{ font-family:var(--mono); font-size:13px; }
+
+  .card.add-project{
+    align-items:center; justify-content:center; text-align:center;
+    border-style:dashed; color:var(--ink-faint); padding:32px 20px;
+    font-family:var(--mono); font-size:13px; min-height:220px;
+  }
+  .card.add-project .plus{ font-size:26px; color:var(--accent); margin-bottom:8px; }
+
+  /* ---------- skills ---------- */
+  .skills-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:20px;
+  }
+  .skill-group{
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:10px; padding:18px 20px;
+  }
+  .skill-group h3{
+    font-family:var(--mono); font-size:12.5px; text-transform:uppercase;
+    letter-spacing:0.06em; color:var(--ink-faint); margin-bottom:12px; font-weight:500;
+  }
+  .skill-tags{ display:flex; flex-wrap:wrap; gap:7px; }
+  .skill-tags span{
+    font-size:13px; background:var(--surface-alt); color:var(--ink);
+    padding:5px 10px; border-radius:6px;
+  }
+
+  /* ---------- education / certifications ---------- */
+  .edu-cert-grid{ display:grid; grid-template-columns:1.1fr 1fr; gap:32px; }
+  @media (max-width:720px){ .edu-cert-grid{ grid-template-columns:1fr; } }
+  .edu-item{ margin-bottom:20px; }
+  .edu-item:last-child{ margin-bottom:0; }
+  .edu-degree{ font-family:var(--display); font-weight:600; font-size:15.5px; }
+  .edu-school{ color:var(--ink-soft); font-size:14px; margin-top:2px; }
+  .edu-meta{ font-family:var(--mono); font-size:12px; color:var(--ink-faint); margin-top:3px; }
+
+  .cert-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .cert-list li{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    font-size:14.5px; border-bottom:1px dashed var(--line); padding-bottom:10px;
+  }
+  .cert-list li:last-child{ border-bottom:none; }
+  .badge{
+    font-family:var(--mono); font-size:10.5px; text-transform:uppercase;
+    letter-spacing:0.05em; padding:3px 8px; border-radius:5px; flex-shrink:0;
+  }
+  .badge.ok{ background:var(--ok-soft); color:var(--ok); }
+  .badge.pending{ background:var(--pending-soft); color:var(--pending); }
+
+  .publication{
+    margin-top:24px; padding-top:20px; border-top:1px solid var(--line);
+    font-size:14.5px; color:var(--ink-soft);
+  }
+  .publication .eyebrow{ margin-bottom:8px; }
+
+  /* ---------- footer ---------- */
+  footer{
+    padding:64px 0 56px;
+    background:var(--ink);
+    border-bottom:none;
+  }
+  footer .wrap{ text-align:center; }
+  footer .eyebrow{ color:#8FB0FF; }
+  footer .eyebrow::before{ background:#8FB0FF; }
+  footer h2{ font-size:24px; margin-bottom:10px; color:#fff; }
+  footer p{ color:#A7ACB8; max-width:460px; margin:0 auto 26px; }
+  footer .hero-links{ justify-content:center; margin-bottom:34px; }
+  footer .btn{ background:#1D212B; border-color:#2C3140; color:#EDEFF3; }
+  footer .btn:hover{ border-color:var(--accent); background:#232836; }
+  footer .btn.primary{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  footer .btn.primary:hover{ background:#3D67F0; }
+  footer .fine{ font-family:var(--mono); font-size:12px; color:#5C6272; }
+
+  @media (max-width:600px){
+    header.hero{ padding:44px 0 30px; }
+    section{ padding:44px 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">MJ<span>M</span></div>
+    <div class="navlinks" id="navlinks">
+      <a href="#summary">Summary</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <div class="avatar">MJM</div>
+      <div>
+        <span class="eyebrow">Data Engineering · DataOps · Erlangen, DE</span>
+        <h1>Md Junayed Miah</h1>
+        <div class="hero-role">Data Science MSc Student — Working Student (Data Pipelines / DataOps)</div>
+      </div>
+    </div>
+
+    <p class="lede">
+      I build reproducible ETL pipelines and apply data-quality validation to
+      real-world datasets — turning messy, multi-source data into something a
+      team can actually trust and rerun.
+    </p>
+
+    <div class="hero-links">
+      <a class="btn primary" href="mailto:junayed.miah7667@gmail.com">Email me</a>
+      <a class="btn" href="https://linkedin.com/in/REPLACE-WITH-YOUR-LINKEDIN" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="https://github.com/REPLACE-WITH-YOUR-GITHUB" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="resume.pdf" target="_blank" rel="noopener">Download CV</a>
+    </div>
+
+    <!-- Signature element: the site's own subject, drawn as a pipeline -->
+    <svg class="pipeline" viewBox="0 0 900 90" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Data pipeline: extract, clean, validate, load, visualize">
+      <line x1="70" y1="30" x2="830" y2="30" class="flow-line"/>
+      <line x1="70" y1="30" x2="830" y2="30" class="flow-dash"/>
+      <!-- nodes generated below via loop-like manual placement -->
+      <g>
+        <circle cx="70" cy="30" r="20" class="stage-node first"/>
+        <text x="70" y="34" text-anchor="middle" class="stage-num first">01</text>
+        <text x="70" y="66" text-anchor="middle" class="stage-label">EXTRACT</text>
+      </g>
+      <g>
+        <circle cx="260" cy="30" r="20" class="stage-node"/>
+        <text x="260" y="34" text-anchor="middle" class="stage-num">02</text>
+        <text x="260" y="66" text-anchor="middle" class="stage-label">CLEAN</text>
+      </g>
+      <g>
+        <circle cx="450" cy="30" r="20" class="stage-node"/>
+        <text x="450" y="34" text-anchor="middle" class="stage-num">03</text>
+        <text x="450" y="66" text-anchor="middle" class="stage-label">VALIDATE</text>
+      </g>
+      <g>
+        <circle cx="640" cy="30" r="20" class="stage-node"/>
+        <text x="640" y="34" text-anchor="middle" class="stage-num">04</text>
+        <text x="640" y="66" text-anchor="middle" class="stage-label">LOAD</text>
+      </g>
+      <g>
+        <circle cx="830" cy="30" r="20" class="stage-node"/>
+        <text x="830" y="34" text-anchor="middle" class="stage-num">05</text>
+        <text x="830" y="66" text-anchor="middle" class="stage-label">VISUALIZE</text>
+      </g>
+    </svg>
+  </div>
+</header>
+
+<main>
+
+  <section id="summary">
+    <div class="wrap">
+      <div class="section-head"><h2>Summary</h2></div>
+      <p>
+        Data Science MSc student with hands-on experience building reproducible
+        ETL pipelines and applying data quality validation to real-world datasets.
+        Delivered an ETL pipeline that cleaned and joined 50,000+ multi-source
+        records into an analytics-ready dataset, and automated manual reporting
+        workflows that cut weekly processing time by 5+ hours. Proficient in
+        Python, SQL, PySpark, and Power BI. Seeking a working student role in
+        data pipeline development or DataOps.
+      </p>
+      <div class="stat-row">
+        <div class="stat"><div class="num">50,000+</div><div class="label">records cleaned &amp; joined</div></div>
+        <div class="stat"><div class="num">5+ hrs</div><div class="label">saved per week via automation</div></div>
+        <div class="stat"><div class="num">4</div><div class="label">end-to-end data projects</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Experience</h2>
+        <span class="section-note">// add new roles at the top of the #experience-data array in the script</span>
+      </div>
+      <div class="timeline" id="experience-list"><!-- rendered by JS --></div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Projects</h2>
+        <span class="section-note">// add new work to the #projects-data array in the script</span>
+      </div>
+      <div class="project-grid" id="project-grid"><!-- rendered by JS --></div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="section-head"><h2>Skills</h2></div>
+      <div class="skills-grid">
+        <div class="skill-group">
+          <h3>Languages</h3>
+          <div class="skill-tags">
+            <span>Python (Pandas, NumPy, Matplotlib, Seaborn)</span>
+            <span>SQL (PostgreSQL, MySQL)</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Data Engineering</h3>
+          <div class="skill-tags">
+            <span>PySpark</span><span>Databricks</span>
+            <span>ETL pipeline design</span><span>Data modeling</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Data Quality &amp; Ops</h3>
+          <div class="skill-tags">
+            <span>Data validation</span><span>Quality checks</span>
+            <span>Pipeline reproducibility</span><span>Basic observability</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Visualization &amp; BI</h3>
+          <div class="skill-tags">
+            <span>Power BI</span><span>Tableau</span><span>Excel (Power Query)</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Languages Spoken</h3>
+          <div class="skill-tags">
+            <span>English — fluent</span><span>German — B1, improving</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="wrap">
+      <div class="section-head"><h2>Education &amp; Certifications</h2></div>
+      <div class="edu-cert-grid">
+        <div>
+          <div class="edu-item">
+            <div class="edu-degree">MSc, Data Science</div>
+            <div class="edu-school">Friedrich-Alexander-Universität Erlangen-Nürnberg</div>
+            <div class="edu-meta">Oct 2023 – Present · Erlangen, Germany</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-degree">BSc, Computer Science &amp; Engineering</div>
+            <div class="edu-school">North South University</div>
+            <div class="edu-meta">Jan 2015 – Dec 2019 · Dhaka, Bangladesh</div>
+          </div>
+
+          <div class="publication">
+            <span class="eyebrow">Publication</span>
+            <div>“Development of Online Home Sharing Web Application” — IEEE CCWC (2021)</div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="cert-list">
+            <li><span>Google Data Analytics — Coursera</span><span class="badge ok">Complete</span></li>
+            <li><span>Become a Data Analyst — AiQuest</span><span class="badge ok">Complete</span></li>
+            <li><span>SQL (Intermediate) — HackerRank</span><span class="badge ok">Complete</span></li>
+            <li><span>PySpark &amp; Databricks (self-paced)</span><span class="badge pending">In progress</span></li>
+            <li><span>Data Engineering Fundamentals</span><span class="badge pending">In progress</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <span class="eyebrow">Get in touch</span>
+    <h2>Let's talk data pipelines.</h2>
+    <p>Open to working student roles in data pipeline development and DataOps, based in Erlangen, Germany.</p>
+    <div class="hero-links">
+      <a class="btn primary" href="mailto:junayed.miah7667@gmail.com">junayed.miah7667@gmail.com</a>
+      <a class="btn" href="tel:+4917673268905">+49 176 73268905</a>
+      <a class="btn" href="https://linkedin.com/in/REPLACE-WITH-YOUR-LINKEDIN" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="https://github.com/REPLACE-WITH-YOUR-GITHUB" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <div class="fine">Site source lives in this repository — see README.md to edit.</div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   DATA — this is the part you'll come back to edit.
+   Add a new project: copy one object in projectsData and change it.
+   Add a photo to a project: set "image" to "images/your-file.jpg"
+   (drop the file in the /images folder first). Leave "image": ""
+   to keep the placeholder box.
+   ============================================================ */
+
+const experienceData = [
+  {
+    role: "Data Analyst Intern",
+    org: "Monish Ltd.",
+    location: "Dhaka, Bangladesh",
+    dates: "Sep 2019 – Dec 2019",
+    bullets: [
+      "Designed and built ETL workflows to extract, clean, and aggregate e-commerce sales data from multiple source systems into a unified reporting dataset.",
+      "Automated manual data collection and validation steps, reducing weekly processing time by 5+ hours and eliminating recurring manual errors.",
+      "Developed Power BI dashboards for real-time inventory tracking, giving stakeholders daily visibility into stock levels and sales trends."
+    ]
+  }
+  // Add your next role here, e.g.:
+  // {
+  //   role: "Working Student — Data Engineering",
+  //   org: "Company Name",
+  //   location: "City, Country",
+  //   dates: "Month Year – Present",
+  //   bullets: ["What you built", "What it improved", "What you'd add if there's a third point"]
+  // },
+];
+
+const projectsData = [
+  {
+    title: "Motor Vehicle Crash Severity Analysis",
+    subtitle: "Python ETL Pipeline",
+    dates: "Oct 2024 – Jan 2025",
+    stages: ["Extract", "Clean", "Validate"],
+    bullets: [
+      "Engineered a reproducible ETL pipeline in Python to extract, clean, and join 50,000+ crash records across multiple CSV sources into a single analytics-ready dataset.",
+      "Implemented systematic data validation checks — missing values, outlier detection, format inconsistencies — to raise data to production-grade (\"gold\") quality.",
+      "Structured the pipeline for repeatable re-runs on new data, applying core DataOps principles of reproducibility and monitoring."
+    ],
+    link: "",
+    image: ""
+  },
+  {
+    title: "Financial Data Analysis",
+    subtitle: "Power BI & Power Query",
+    dates: "Aug 2023 – Sep 2023",
+    stages: ["Transform", "Validate", "Report"],
+    bullets: [
+      "Built a repeatable data model in Power Query to extract and transform raw sales data for recurring monthly reporting.",
+      "Implemented automated data quality checks, including negative-profit alerts, to improve dashboard reliability and catch reporting errors early."
+    ],
+    link: "",
+    image: ""
+  },
+  {
+    title: "Student Performance Analysis",
+    subtitle: "Data Integration",
+    dates: "Apr 2023 – May 2023",
+    stages: ["Clean", "Join", "Document"],
+    bullets: [
+      "Cleaned and merged multiple datasets (test scores, parental education, lunch type) into a unified analytics-ready dataset.",
+      "Documented all transformation logic to ensure the workflow was clear, maintainable, and reproducible by others."
+    ],
+    link: "",
+    image: ""
+  },
+  {
+    title: "Impact of COVID-19 on Global Economy",
+    subtitle: "Python Analysis",
+    dates: "Aug 2022 – Sep 2022",
+    stages: ["Analyze", "Visualize"],
+    bullets: [
+      "Analyzed pandemic spread and economic indicators across 50+ countries using Python (Pandas, Seaborn).",
+      "Visualized GDP decline and recovery trends; findings featured in a departmental research showcase."
+    ],
+    link: "",
+    image: ""
+  }
+  // Add your next project here — copy this shape:
+  // {
+  //   title: "Project Name",
+  //   subtitle: "One-line tech/summary",
+  //   dates: "Month Year – Month Year",
+  //   stages: ["Extract", "Clean"],   // pick from: Extract, Clean, Transform, Validate, Join, Load, Analyze, Visualize, Report, Document
+  //   bullets: ["What you did", "What it produced or improved"],
+  //   link: "https://github.com/you/repo",   // optional, leave "" to hide
+  //   image: ""                              // e.g. "images/project5.png", leave "" for placeholder
+  // },
+];
+
+function renderExperience(){
+  const list = document.getElementById('experience-list');
+  list.innerHTML = experienceData.map(e => `
+    <div class="tl-item">
+      <div class="tl-role">${e.role} — ${e.org}</div>
+      <div class="tl-meta">${e.dates} · ${e.location}</div>
+      <ul>${e.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+    </div>
+  `).join('') + `
+    <div class="tl-item placeholder">+ next role goes here — edit experienceData in the script</div>
+  `;
+}
+
+function renderProjects(){
+  const grid = document.getElementById('project-grid');
+  grid.innerHTML = projectsData.map(p => `
+    <div class="card">
+      <div class="card-media">
+        ${p.image
+          ? `<img src="${p.image}" alt="${p.title} screenshot" loading="lazy">`
+          : `+ add project screenshot<br>(images/…)`}
+      </div>
+      <div class="card-body">
+        <div>
+          <div class="card-title">${p.title}</div>
+          <div class="card-date">${p.subtitle} · ${p.dates}</div>
+        </div>
+        <div class="stage-tags">${p.stages.map(s => `<span class="stage-tag">${s}</span>`).join('')}</div>
+        <ul>${p.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+        ${p.link ? `<a class="card-link" href="${p.link}" target="_blank" rel="noopener">View repository →</a>` : ''}
+      </div>
+    </div>
+  `).join('') + `
+    <div class="card add-project">
+      <div class="plus">+</div>
+      Your next project<br>appears here automatically
+    </div>
+  `;
+}
+
+renderExperience();
+renderProjects();
+
+/* Highlight the current section in the nav while scrolling */
+const sections = document.querySelectorAll('main section, header.hero');
+const navLinks = document.querySelectorAll('.navlinks a');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting){
+      const id = entry.target.id;
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+    }
+  });
+}, { rootMargin: '-45% 0px -50% 0px' });
+sections.forEach(s => { if (s.id) observer.observe(s); });
+</script>
+
+</body>
+</html>
